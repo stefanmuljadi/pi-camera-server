@@ -9,8 +9,7 @@ import time
 
 import redis
 from tornado import websocket, web, ioloop
-
-MAX_FPS = 10
+import constant
 
 class IndexHandler(web.RequestHandler):
     """ Handler for the root static page. """
@@ -36,7 +35,7 @@ class SocketHandler(websocket.WebSocketHandler):
         then retrieve image, de-serialize, encode and send to client. """
 
         while True:
-            time.sleep(1./MAX_FPS)
+            time.sleep(1./constant.MAX_FPS)
             image_id = self._store.get('image_id')
             if image_id != self._prev_image_id:
                 break
