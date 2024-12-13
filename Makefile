@@ -16,5 +16,9 @@ recorder: .venv
 server: .venv
 	.venv/bin/python server.py
 
+serve_image: .venv
+	.venv/bin/python server.py
+	.venv/bin/python recorder.py
+
 clean:
 	rm -rf .venv

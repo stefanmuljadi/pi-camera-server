@@ -10,7 +10,7 @@ import time
 import redis
 from tornado import websocket, web, ioloop
 
-MAX_FPS = 100
+MAX_FPS = 10
 
 class IndexHandler(web.RequestHandler):
     """ Handler for the root static page. """
@@ -21,6 +21,9 @@ class IndexHandler(web.RequestHandler):
 class SocketHandler(websocket.WebSocketHandler):
     """ Handler for the websocket URL. """
 
+    def check_origin(self, origin):
+        return True
+    
     def __init__(self, *args, **kwargs):
         """ Initialize the Redis store and framerate monitor. """
 
@@ -41,7 +44,6 @@ class SocketHandler(websocket.WebSocketHandler):
         image = self._store.get('image')
         image = base64.b64encode(image)
         self.write_message(image)
-        print(image_id)
 
 app = web.Application([
     (r'/', IndexHandler),
@@ -49,5 +51,6 @@ app = web.Application([
 ])
 
 if __name__ == '__main__':
-    app.listen(9000)
+    app.listen(8080)
+    print("Streaming image at port 8080")
     ioloop.IOLoop.instance().start()
