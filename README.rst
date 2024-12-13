@@ -15,11 +15,6 @@ established websocket connection.
 
 .. image:: https://github.com/vmlaker/hello-websocket/blob/master/diagram.png?raw=true
 
-The *client* web page is dead simple: 
-It sends an initial request on a websocket.
-When image data arrives, it assigns it to ``src`` attribute of the
-``<img>`` tag, then simply sends the next request. That's it!
-
 Installation
 ------------
 Install Redis server::
@@ -32,16 +27,6 @@ Build the virtual environment with all needed modules::
 
 Usage
 -----
-Two separate programs need to be running: 1) the *recorder* which captures
-and writes to Redis database, and 2) the *server* which reads the current
-image from the database and serves to requesting WebSocket clients.
-
-Run the *recorder*::
-
-   make recorder
-
-Now (in a different shell) run the *server*::
-
-   make server
+make server recorder -j
    
-Go to http://localhost:9000 to view the webcam.
+Go to http://localhost:8080 to view the webcam.
