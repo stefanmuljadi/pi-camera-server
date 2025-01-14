@@ -6,7 +6,7 @@ Usage:
 
 import base64
 import time
-
+import json
 import redis
 from tornado import websocket, web, ioloop
 import constant
@@ -37,16 +37,27 @@ class SocketHandler(websocket.WebSocketHandler):
         while True:
             time.sleep(1./constant.MAX_FPS)
             image_id = self._store.get('image_id')
+
             if image_id != self._prev_image_id:
                 break
         self._prev_image_id = image_id
         image = self._store.get('image')
+        is_glass_detected = self._store.get('is_glass_detected')
+        angle = self._store.get('angle')
         image = base64.b64encode(image)
-        self.write_message(image)
+        data = {
+            "image": image.decode("utf-8"), 
+            "is_glass_detected": is_glass_detected.decode("utf-8"),
+            "angle": angle.decode("utf-8")
+        }
+        self.write_message(json.dumps(data))
+
+    
 
 app = web.Application([
     (r'/', IndexHandler),
     (r'/ws', SocketHandler),
+
 ])
 
 if __name__ == '__main__':
